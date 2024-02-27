@@ -1,2 +1,4 @@
 /venv/
 .idea
+words.txt
+__pycache__/
