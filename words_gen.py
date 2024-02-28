@@ -1,20 +1,23 @@
 import random 
 import string 
 import os 
+import des
+import json
 
 
 def generate_words(N, length):
 
     char_set = string.ascii_letters + string.digits + './'
-    words = []
+    words = {}
     for _ in range(N):
         w = ''.join( random.choice(char_set) for _ in range(length))
-        words.append(w)
+        words[w] = des.encrypt(w)
 
     return words
 
-words = generate_words(100000, 8)
+words = generate_words(1000, 8)
 
-with open("words.txt", "w") as f:
-    for word in words: 
-        f.write(word + "\n")
+json_object = json.dumps(words, indent = 4)
+with open("words.json", "w") as f:
+    f.write(json_object)
+
