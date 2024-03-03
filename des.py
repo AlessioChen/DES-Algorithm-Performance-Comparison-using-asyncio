@@ -2,7 +2,7 @@ import utils
 from constants import e_box_table, s_boxes, p_box_table, ip_inverse_table
 
 
-def encrypt(input_str):
+def encrypt(input_str: str) -> str:
     bin_input = utils.str_to_bin(input_str)
     # Initialize lists to store round keys
     round_keys = utils.generate_round_keys()
@@ -48,7 +48,7 @@ def encrypt(input_str):
     return utils.bin_to_ascii(cipher)
 
 
-def decrypt(cipher):
+def decrypt(cipher: str) -> str:
     round_keys = utils.generate_round_keys()
 
     # Apply Initial Permutation

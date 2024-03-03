@@ -11,13 +11,13 @@ from functools import partial
 from typing import List
 
 
-def read_words_from_file():
+def read_words_from_file() -> dict[str, str]:
     with open("words.json", 'r') as f:
         words = json.load(f)
     return words
 
 
-def get_intervals(words, n_threads):
+def get_intervals(words: dict[str, str], n_threads: int) -> [[int, int]]:
     N = len(words)
     interval_size = N // n_threads
     intervals = []
@@ -33,7 +33,7 @@ def get_intervals(words, n_threads):
     return intervals
 
 
-def sequential_solver(words):
+def sequential_solver(words: dict[str, str]) -> None:
     for password, encrypted in words.items():
         enc_to_bin = utils.str_to_bin(encrypted)
         decrypted = des.decrypt(enc_to_bin)
@@ -42,7 +42,7 @@ def sequential_solver(words):
             raise Exception(f"{password} and {decrypted} are not matching")
 
 
-def parallel(words, passwords, interval):
+def parallel(words: dict[str, str], passwords: list[str], interval: [[int, int]]) -> None:
     start_i, end_i = interval[0], interval[1]
 
     for i in range(start_i, end_i):
@@ -51,10 +51,9 @@ def parallel(words, passwords, interval):
 
         if passwords[i] != decrypted:
             raise Exception(f"{password} and {decrypted} are not matching")
-    return True
 
 
-async def parallel_solver(words, passwords, n_threads):
+async def parallel_solver(words: dict[str, str], passwords: list[str], n_threads: int) -> None:
     intervals = get_intervals(words, n_threads)
 
     with ProcessPoolExecutor() as process_pool:
@@ -67,7 +66,7 @@ async def parallel_solver(words, passwords, n_threads):
         await asyncio.gather(*call_coros)
 
 
-async def main():
+async def main() -> None:
     times = {}
     speedups = {}
     n_tests = 10

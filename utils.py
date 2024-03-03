@@ -1,7 +1,7 @@
 from constants import ip_table, pc1_table, shift_schedule, pc2_table
 
 
-def str_to_bin(input_str):
+def str_to_bin(input_str: str) -> str:
     """
     Conversion of string to binary of 64 bits
     """
@@ -17,25 +17,25 @@ def str_to_bin(input_str):
     return bin_str
 
 
-def bin_to_ascii(bin_str):
+def bin_to_ascii(bin_str: str) -> str:
     return ''.join([chr(int(bin_str[i:i + 8], 2)) for i in range(0, len(bin_str), 8)])
 
 
-def ip_on_bin_rep(bin_representation):
+def ip_on_bin_rep(bin_representation: str) -> str:
     """
     Implementation of initial permutation on the binary str
     """
     return ''.join(bin_representation[ip_table[i] - 1] for i in range(64))
 
 
-def key_in_bin_conv(key='abcdefgh'):
+def key_in_bin_conv(key: str = 'abcdefgh') -> str:
     """
     Convert the characters to binary and concatenate to form a 64-bit binary string
     """
     return ''.join(format(ord(char), '08b') for char in key)
 
 
-def generate_round_keys():
+def generate_round_keys() -> [str]:
     # Key into binary
     bin_key = key_in_bin_conv()
     pc1_key_str = ''.join(bin_key[bit - 1] for bit in pc1_table)
