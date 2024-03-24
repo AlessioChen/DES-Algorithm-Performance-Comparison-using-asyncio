@@ -1,20 +1,20 @@
 import random
-import string
-import os
 import des
-import json
+import datetime
 
 
-def generate_words(N, length=8):
-    char_set = string.ascii_letters + string.digits + './'
-    words = {}
-    for _ in range(N):
-        w = ''.join(random.choice(char_set) for _ in range(length))
-        words[w] = des.encrypt(w)
+def generate_random_passwords(N: int, start_date: datetime, end_date: datetime) -> list[str]:
+    passwords = []
+    for i in range(N):
+        random_date = start_date + datetime.timedelta(days=random.randint(0, (end_date - start_date).days))
+        encrypted_password = des.encrypt(random_date.strftime("%Y%m%d"))
+        passwords.append(encrypted_password)
 
-    json_object = json.dumps(words, indent=4)
-    with open("words.json", "w") as f:
-        f.write(json_object)
+    return passwords
 
 
-generate_words(500000, 8)
+if __name__ == '__main__':
+    start_date = datetime.date(1900, 1, 1)
+    end_date = datetime.date(2024, 12, 31)
+    passwords = generate_random_passwords(10, start_date, end_date)
+    print(passwords)

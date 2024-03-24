@@ -2,4 +2,5 @@
 .idea
 words.txt
 words.json
+passwords.txt
 __pycache__/
